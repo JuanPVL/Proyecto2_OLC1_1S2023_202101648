@@ -28,7 +28,7 @@ class InterpreteController {
             } catch (error) {
                 console.log(error);
                 res.json({
-                    console:error,
+                    consola:error,
                     errores: error,
                 });
             }
