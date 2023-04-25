@@ -6,6 +6,12 @@
 
 %%
 
+/* Espacios en Blanco */
+[ \r\t]+           {}
+\n                 {}
+(\/\/).*            {}
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] {}
+
 //simbolos
 ";"                return 'PCOMA';
 "("                return 'PAIZQ';
@@ -28,6 +34,8 @@
 "false"            return "RFALSE";
 "if"               return "RIF";
 "else"             return "RELSE";
+"while"            return "RWHILE";
+"main"             return "RMAIN";
 
 //tipos de variables
 "int"              return "RINT";
@@ -56,11 +64,7 @@
 "||"               return "OR";
 "!"                return "NOT";
 
-/* Espacios en Blanco */
-[ \r\t]+           {}
-\n                 {}
-(\/\/).*            {}
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] {}
+
 
 [a-zA-Z][a-zA-Z0-9_]*   return "ID";
 [0-9]+("."[0-9]+)\b     return "DECIMAL";
@@ -98,6 +102,9 @@
     const {Logica} = require("./Expressions/Logica");
     const {tipoLogico} = require("./utils/TipoLogico");
     const {InsIf} = require("./Instructions/InsIf");
+    const {InWhile} = require("./Instructions/InsWhile");
+    const {InsMain} = require("./Instructions/Main");
+    const {AsignarValor} = require("./Instructions/AsignarValor");
 %}
 
 //Precedencias
@@ -128,9 +135,12 @@ INSTRUCCIONES
 INSTRUCCION
     : FUNCPRINT { $$ = $1; }
     | INSDECLARAR { $$ = $1; }
+    | INSASIGNAR { $$ = $1; }
     | LLAMARFUNCION { $$ = $1; }
     | GUARDARFUNCION { $$ = $1; }
     | INSTIF { $$ = $1; }
+    | INSWHILE { $$ = $1; }
+    | RMAIN LLAMARFUNCION { $$ = new InsMain($2,@1.first_line,@1.first_column); }
     | error PCOMA
     { console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
 ;
@@ -142,6 +152,10 @@ FUNCPRINT
 INSDECLARAR
     : TIPO ID PCOMA { $$ = new Declaration($2,$1,null,@1.first_line,@1.first_column); }
     | TIPO ID IGUAL EXPRESION PCOMA { $$ = new Declaration($2,$1,$4,@1.first_line,@1.first_column); }
+;
+
+INSASIGNAR
+    : ID IGUAL EXPRESION PCOMA { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
 ;
 
 GUARDARFUNCION
@@ -157,6 +171,10 @@ INSTELSE
     :RELSE INSSTATEMENT { $$ = $2; }
     |RELSE INSTIF   { $$ = $2; }
     | { $$ = null;}
+;
+
+INSWHILE
+    : RWHILE PAIZQ EXPRESION PADER INSSTATEMENT { $$ = new InWhile($3,$5,@1.first_line,@1.first_column); }
 ;
 
 INSSTATEMENT
