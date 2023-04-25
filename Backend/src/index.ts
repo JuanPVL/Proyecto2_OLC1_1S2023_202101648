@@ -3,7 +3,7 @@ import router from './routes/interprete'
 
 const app = express();
 app.use(express.json());
-const PORT = 3000;
+const PORT = 5000;
 
 // app.get('/ping', (req,res) => {
 //     console.log('compiladores 1 si sale');
