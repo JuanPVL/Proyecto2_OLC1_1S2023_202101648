@@ -1,5 +1,4 @@
 import { Expression } from "../abstract/Expression";
-import { tipo } from "../abstract/Return";
 import { Environment } from "../abstract/Environment";
 import { Instruction } from "../abstract/Instruction";
 

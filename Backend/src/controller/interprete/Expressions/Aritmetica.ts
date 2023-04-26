@@ -76,6 +76,7 @@ export class Aritmetica extends Expression {
                     if(operador1.type == tipo.CHAR) {
                         operador1.value = operador1.value.charCodeAt(0);
                     }
+                    return {value: operador1.value - operador2.value, type: tipo.DOUBLE};
             }
         }
         else if(this.operador == tipoAritmetica.MULTIPLICACION) {

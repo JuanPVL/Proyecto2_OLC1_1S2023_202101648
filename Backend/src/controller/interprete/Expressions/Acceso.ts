@@ -4,7 +4,7 @@ import { Environment } from "../abstract/Environment";
 
 export class Acceso extends Expression {
 
-    constructor(private id:string,linea:number,columna:number) {
+    constructor(public id:string,linea:number,columna:number) {
         super(linea,columna);
     }
 

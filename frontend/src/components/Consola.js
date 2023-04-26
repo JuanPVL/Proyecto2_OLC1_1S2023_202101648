@@ -1,19 +1,16 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
 import { aura } from '@uiw/codemirror-theme-aura';
 
-function Consola() {
-  const onChange = React.useCallback((value, viewUpdate) => {
-    console.log('value:', value);
-  }, []);
+function Consola(props) {
+
   return (
     <CodeMirror
-      value=""
+      value={props.consola}
       height="450px"
+      width='550px'
+      maxWidth='550px'
       theme={aura}
-      extensions={[javascript({ jsx: true })]}
-      onChange={onChange}
     />
   );
 }

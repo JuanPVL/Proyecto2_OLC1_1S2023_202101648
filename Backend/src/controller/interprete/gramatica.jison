@@ -1,7 +1,7 @@
 /* Definicion Léxica */
 %lex
 
-%options case_insensitive
+%options case-insensitive
 %x string 
 
 %%
@@ -26,6 +26,8 @@
 "=="               return "IGUALIGUAL";
 "<="               return "MENORIGUAL";
 ">="               return "MAYORIGUAL";
+"++"               return "INCREMENTO";
+"--"               return "DECREMENTO";
 "="                return "IGUAL";
 
 //palabras reservadas
@@ -43,6 +45,9 @@
 "char"             return "RCHAR";
 "string"           return "RSTRING";
 "boolean"          return "RBOOLEAN";
+
+//tipo funcion
+"void"              return "RVOID";
 
 //aritmeticos
 "+"                return "MAS";
@@ -105,17 +110,19 @@
     const {InWhile} = require("./Instructions/InsWhile");
     const {InsMain} = require("./Instructions/Main");
     const {AsignarValor} = require("./Instructions/AsignarValor");
+    const {Incremento} = require("./Expressions/Incremento");
+    const {Decremento} = require("./Expressions/Decremento");
 %}
 
 //Precedencias
+%left 'POTENCIA'
 %left 'OR'
 %left 'AND'
-%left 'IGUALIGUAL' 'DIFERENTE'
-%left 'MENORQUE' 'MAYORQUE' 'MENORIGUAL' 'MAYORIGUAL'
+%left 'DECREMENTO' 'INCREMENTO'
+%left 'DIFERENTE' 'MENORQUE' 'MAYORQUE' 'MENORIGUAL' 'MAYORIGUAL' 'IGUALIGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIVISION' 'MODULO'
-%left 'POTENCIA'
-%right 'UMENOS' 'NOT'
+%right 'UMENOS' 'NOT' 'PAIZQ'
 
 %start INICIO
 
@@ -141,8 +148,8 @@ INSTRUCCION
     | INSTIF { $$ = $1; }
     | INSWHILE { $$ = $1; }
     | RMAIN LLAMARFUNCION { $$ = new InsMain($2,@1.first_line,@1.first_column); }
-    | error PCOMA
-    { console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
+    //| error PCOMA
+    //{ console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
 ;
 
 FUNCPRINT
@@ -170,7 +177,7 @@ INSTIF
 INSTELSE
     :RELSE INSSTATEMENT { $$ = $2; }
     |RELSE INSTIF   { $$ = $2; }
-    | { $$ = null;}
+    |               { $$ = null;}
 ;
 
 INSWHILE
@@ -196,7 +203,9 @@ EXPRESION
     | RELACIONAL       { $$ = $1; }
     | LOGICO       { $$ = $1; }
     | ACCEDERVARIABLE { $$ = $1; }
+    |INCREMENTODECREMENTO { $$ = $1; }
     | ARITMETICA       { $$ = $1; }
+    |PAIZQ EXPRESION PADER { $$ = $2; }
     
 ;
 
@@ -239,7 +248,12 @@ LOGICO
 
 ACCEDERVARIABLE
     :ID         {$$ = new Acceso($1,@1.first_line,@1.first_column);}
-; 
+;
+
+INCREMENTODECREMENTO
+    : EXPRESION INCREMENTO {$$ = new Incremento($1,@1.first_line,@1.first_column); }
+    | EXPRESION DECREMENTO {$$ = new Decremento($1,@1.first_line,@1.first_column); }
+;
 
 PRIMITIVO
     : ENTERO    {$$ = new Primitivo(@1.first_line,@1.first_column,$1, tipo.INT);}
@@ -256,6 +270,7 @@ TIPO
     | RCHAR     {$$ = tipo.CHAR;}
     | RSTRING   {$$ = tipo.STRING;}
     | RBOOLEAN  {$$ = tipo.BOOLEAN;}
+    | RVOID     {$$ = tipo.VOID;}
 ;
 
 

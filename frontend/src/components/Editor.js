@@ -12,6 +12,8 @@ function Editor(props) {
     <CodeMirror
       value="//TODO - Add code here"
       height="450px"
+      width='500px'
+      maxWidth='500px'
       theme={aura}
       extensions={[javascript({ jsx: true })]}
       onChange={onChange}

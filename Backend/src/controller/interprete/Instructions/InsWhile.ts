@@ -9,10 +9,9 @@ export class InWhile extends Instruction {
 
     public execute(env: Environment) {
         let valorR = this.condition.execute(env);
-        let envWhile = new Environment(env);
         while(valorR.value) {
-            this.statement.execute(envWhile);
-            valorR = this.condition.execute(envWhile);
+            this.statement.execute(env);
+            valorR = this.condition.execute(env);
         }
     }
 }
