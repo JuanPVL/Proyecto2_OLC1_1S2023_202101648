@@ -5,5 +5,5 @@ export enum tipoAritmetica {
     DIVISION,
     MENOSUNARIO,
     POTENCIA,
-    MODULO
+    MODULO,
 }

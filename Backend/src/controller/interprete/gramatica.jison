@@ -38,6 +38,15 @@
 "else"             return "RELSE";
 "while"            return "RWHILE";
 "main"             return "RMAIN";
+"for"              return "RFOR";
+"do"               return "RDO";
+"toLower"          return "RTOLOWER";
+"toUpper"          return "RTOUPPER";
+"round"            return "RROUND";
+"truncate"         return "RTRUNCATE";
+"length"           return "RLENGTH";
+"typeof"           return "RTYPEOF";
+"toString"         return "RTOSTRING";
 
 //tipos de variables
 "int"              return "RINT";
@@ -108,22 +117,29 @@
     const {tipoLogico} = require("./utils/TipoLogico");
     const {InsIf} = require("./Instructions/InsIf");
     const {InWhile} = require("./Instructions/InsWhile");
+    const {InsDoWhile} = require("./Instructions/InsDoWhile");
     const {InsMain} = require("./Instructions/Main");
     const {AsignarValor} = require("./Instructions/AsignarValor");
     const {Incremento} = require("./Expressions/Incremento");
     const {Decremento} = require("./Expressions/Decremento");
+    const {ToLowerUpper} = require("./Expressions/ToLowerUpper");
+    const {Round} = require("./Expressions/Round");
+    const {Truncate} = require("./Expressions/Truncate");
+    const {Length} = require("./Expressions/Length");
+    const {TypeOf} = require("./Expressions/TypeOf");
+    const {ToString} = require("./Expressions/ToString");
+    const {InsFor} = require("./Instructions/InsFor");
 %}
 
 //Precedencias
+%left 'DECREMENTO' 'INCREMENTO'
 %left 'POTENCIA'
 %left 'OR'
 %left 'AND'
-%left 'DECREMENTO' 'INCREMENTO'
 %left 'DIFERENTE' 'MENORQUE' 'MAYORQUE' 'MENORIGUAL' 'MAYORIGUAL' 'IGUALIGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIVISION' 'MODULO'
-%right 'UMENOS' 'NOT' 'PAIZQ'
-
+%right 'UMENOS' 'NOT'
 %start INICIO
 
 
@@ -147,6 +163,9 @@ INSTRUCCION
     | GUARDARFUNCION { $$ = $1; }
     | INSTIF { $$ = $1; }
     | INSWHILE { $$ = $1; }
+    | INSDOWHILE { $$ = $1; }
+    | INSFOR { $$ = $1; }
+    | INCREMENTODECREMENTO PCOMA { $$ = $1; }
     | RMAIN LLAMARFUNCION { $$ = new InsMain($2,@1.first_line,@1.first_column); }
     //| error PCOMA
     //{ console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
@@ -163,6 +182,10 @@ INSDECLARAR
 
 INSASIGNAR
     : ID IGUAL EXPRESION PCOMA { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
+;
+
+ASIGNARFOR
+    : ID IGUAL EXPRESION { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
 ;
 
 GUARDARFUNCION
@@ -182,6 +205,17 @@ INSTELSE
 
 INSWHILE
     : RWHILE PAIZQ EXPRESION PADER INSSTATEMENT { $$ = new InWhile($3,$5,@1.first_line,@1.first_column); }
+;
+
+INSDOWHILE
+    : RDO INSSTATEMENT RWHILE PAIZQ EXPRESION PADER PCOMA { $$ = new InsDoWhile($5,$2,@1.first_line,@1.first_column); }
+;
+
+INSFOR
+    : RFOR PAIZQ INSDECLARAR EXPRESION PCOMA EXPRESION PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
+    | RFOR PAIZQ INSASIGNAR EXPRESION PCOMA EXPRESION PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
+    | RFOR PAIZQ INSDECLARAR EXPRESION PCOMA ASIGNARFOR PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
+    | RFOR PAIZQ INSASIGNAR EXPRESION PCOMA ASIGNARFOR PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
 ;
 
 INSSTATEMENT
@@ -205,6 +239,12 @@ EXPRESION
     | ACCEDERVARIABLE { $$ = $1; }
     |INCREMENTODECREMENTO { $$ = $1; }
     | ARITMETICA       { $$ = $1; }
+    | TOLOWERUPPER     { $$ = $1; }
+    | REDONDEO         { $$ = $1; }
+    | TRUNCAR          { $$ = $1; }
+    | ELENGTH          { $$ = $1; }
+    | ETYPEOF          { $$ = $1; }
+    | ETOSTRING        { $$ = $1; }
     |PAIZQ EXPRESION PADER { $$ = $2; }
     
 ;
@@ -251,8 +291,33 @@ ACCEDERVARIABLE
 ;
 
 INCREMENTODECREMENTO
-    : EXPRESION INCREMENTO {$$ = new Incremento($1,@1.first_line,@1.first_column); }
-    | EXPRESION DECREMENTO {$$ = new Decremento($1,@1.first_line,@1.first_column); }
+    : ID INCREMENTO {$$ = new Incremento($1,@1.first_line,@1.first_column); }
+    | ID DECREMENTO {$$ = new Decremento($1,@1.first_line,@1.first_column); }
+;
+
+TOLOWERUPPER
+    : RTOLOWER PAIZQ EXPRESION PADER {$$ = new ToLowerUpper(1,$3,@1.first_line,@1.first_column); }
+    | RTOUPPER PAIZQ EXPRESION PADER {$$ = new ToLowerUpper(2,$3,@1.first_line,@1.first_column); }
+;
+
+REDONDEO
+    : RROUND PAIZQ EXPRESION PADER {$$ = new Round($3,@1.first_line,@1.first_column); }
+;
+
+TRUNCAR
+    : RTRUNCATE PAIZQ EXPRESION PADER {$$ = new Truncate($3,@1.first_line,@1.first_column); }
+;
+
+ELENGTH
+    : RLENGTH PAIZQ EXPRESION PADER {$$ = new Length($3,@1.first_line,@1.first_column); }
+;
+
+ETYPEOF
+    : RTYPEOF PAIZQ EXPRESION PADER {$$ = new TypeOf($3,@1.first_line,@1.first_column); }
+;
+
+ETOSTRING
+    : RTOSTRING PAIZQ EXPRESION PADER {$$ = new ToString($3,@1.first_line,@1.first_column); }
 ;
 
 PRIMITIVO

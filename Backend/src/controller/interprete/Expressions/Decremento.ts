@@ -8,15 +8,22 @@ export class Decremento extends Expression {
     }
 
     public execute(env:Environment): Return {
-        const value = env.getVariable(this.id);
-        if(value != null) {
-            if(value.tipo == tipo.INT || value.tipo == tipo.DOUBLE) {
-                return {value: value.valor--, type: value.tipo};
+        if(this.id != null) {
+            let value = env.getVariable(this.id);
+            if(value != null) {
+                if(value.tipo == tipo.INT) {
+                    value.valor = value.valor - 1;
+                    return {value: value.valor, type: value.tipo};
+                } else if(value.tipo == tipo.DOUBLE) {
+                    value.valor = value.valor - 1.0;
+                    return {value: value.valor, type: value.tipo};
+                } else {
+                    return {value: null, type: tipo.NULL};
+                }
             } else {
-                return {value: null, type: tipo.NULL};
+                throw new Error("Variable no encontrada");
             }
-        } else {
-            throw new Error("Variable no encontrada");
         }
+       return {value: null, type: tipo.NULL}; 
     }
 }
