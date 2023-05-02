@@ -13,7 +13,7 @@ export class EReturn extends Instruction {
             let rvalue = this.value.execute(env);
             return {value:rvalue.value, type: tipo.RETURN, tipo:rvalue.type};
         }
-        return{value:undefined, type: tipo.RETURN};
+        return this
     }
 
     public drawAST(): { rama: string; nodo: string; } {

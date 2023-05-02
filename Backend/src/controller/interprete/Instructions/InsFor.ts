@@ -3,6 +3,10 @@ import { Expression } from "../abstract/Expression";
 import { Environment } from "../abstract/Environment";
 import { Declaration } from "./Declaration";
 import { AsignarValor } from "./AsignarValor";
+import { tipo } from "../abstract/Return";
+import { IContinue } from "./IContinue";
+import { IBreak } from "./IBreak";
+import { EReturn } from "../Expressions/EReturn";
 
 export class InsFor extends Instruction {
     constructor(private declaracion: Declaration|AsignarValor, private condicion: Expression, private incremento: Expression|AsignarValor, private statement: Instruction, linea: number, columna: number) {
@@ -13,12 +17,22 @@ export class InsFor extends Instruction {
         this.declaracion.execute(env);
         const valorR = this.condicion.execute(env);
         if(valorR != null && valorR != undefined){
-            while(valorR) {
+           cicloPrincipal:while(valorR) {
                 const valorR = this.condicion.execute(env);
                 if(!valorR.value){
                     break;
                 }
-               this.statement.execute(env);
+               const element = this.statement.execute(env);
+               if (element instanceof IBreak) {
+                break cicloPrincipal;
+               } 
+               else if (element instanceof IContinue) {
+                    this.incremento.execute(env);
+                    continue cicloPrincipal;
+               } else if( element instanceof EReturn){
+                    return element;
+               }
+               
                 this.incremento.execute(env);
             }
         }

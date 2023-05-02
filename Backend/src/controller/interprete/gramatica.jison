@@ -48,6 +48,8 @@
 "typeof"           return "RTYPEOF";
 "toString"         return "RTOSTRING";
 "return"           return "RRETURN";
+"continue"         return "RCONTINUE";
+"break"            return "RBREAK";
 
 //tipos de variables
 "int"              return "RINT";
@@ -130,6 +132,8 @@
     const {TypeOf} = require("./Expressions/TypeOf");
     const {ToString} = require("./Expressions/ToString");
     const {EReturn} = require("./Expressions/EReturn");
+    const {IContinue} = require("./Instructions/IContinue");
+    const {IBreak} = require("./Instructions/IBreak");
     const {InsFor} = require("./Instructions/InsFor");
 %}
 
@@ -170,6 +174,8 @@ INSTRUCCION
     | INSFOR { $$ = $1; }
     | INCREMENTODECREMENTO PCOMA { $$ = $1; }
     | RETORNO PCOMA { $$ = $1; }
+    | RCONTINUE PCOMA { $$ = new IContinue(@1.first_line,@1.first_column); }
+    | RBREAK PCOMA { $$ = new IBreak(@1.first_line,@1.first_column); }
     | RMAIN LLAMARFUNCION PCOMA{ $$ = new InsMain($2,@1.first_line,@1.first_column); }
     //| error PCOMA
     //{ console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}

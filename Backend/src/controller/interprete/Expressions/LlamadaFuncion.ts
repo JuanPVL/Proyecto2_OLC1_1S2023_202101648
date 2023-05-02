@@ -27,7 +27,7 @@ export class LlamadaFuncion extends Expression {
                     if(retornar.type ==tipo.RETURN){
                             return {value:retornar.value , type:retornar.tipo};                    
                     }   
-                }
+                } 
             } else {
                 console.log("Error, la funcion " + this.id + " no tiene la cantidad de parametros correcta, linea " + this.line + " y columna " + this.column);
             }
