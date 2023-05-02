@@ -148,4 +148,8 @@ export class Aritmetica extends Expression {
         }
         return {value: null, type: tipo.NULL};
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

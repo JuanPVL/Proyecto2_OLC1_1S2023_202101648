@@ -13,4 +13,8 @@ export class InsSwitch extends Instruction {
             
         }
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

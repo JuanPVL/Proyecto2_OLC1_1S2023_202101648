@@ -14,4 +14,8 @@ export class InWhile extends Instruction {
             valorR = this.condition.execute(env);
         }
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

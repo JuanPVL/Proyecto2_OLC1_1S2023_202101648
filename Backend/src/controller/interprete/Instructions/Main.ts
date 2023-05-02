@@ -10,4 +10,9 @@ export class InsMain extends Instruction{
     public execute(env:Environment) {
         this.funcion.execute(env);
     }
+
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

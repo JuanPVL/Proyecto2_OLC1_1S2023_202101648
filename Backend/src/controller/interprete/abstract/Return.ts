@@ -6,7 +6,9 @@ export enum tipo {
     CHAR = 3,
     STRING = 4,
     NULL = 5,
-    VOID = 6
+    VOID = 6,
+    ARRAY = 7,
+    RETURN = 8
 }
 
 export type Return = {

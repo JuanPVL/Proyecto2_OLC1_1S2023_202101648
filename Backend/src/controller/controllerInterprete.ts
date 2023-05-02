@@ -1,6 +1,7 @@
 import { Request,Response } from "express";
 import { printList } from "./interprete/reports/PrintList";
 import { Environment } from "./interprete/abstract/Environment";
+import { ListaTabla } from "./interprete/reports/TablaSimbolos";
 
 
 class InterpreteController {
@@ -19,12 +20,38 @@ class InterpreteController {
             const ast = parser.parse(codigo);
             try {
                 printList.splice(0,printList.length);
-                const globalEnv = new Environment(null);
+                ListaTabla.splice(0,ListaTabla.length);
+                const globalEnv = new Environment(null,"Global");
                 for (const inst of ast) {
                     inst.execute(globalEnv);
                 }
-    
-                res.json({consola: printList.join("\n"), errores:null});
+
+                let drawast = `
+                digraph AST {
+                    nodoPrincipal[label="AST"];\n
+                `;
+                for(const inst of ast){
+                    const dAST = inst.drawAST();
+                    drawast += `${dAST.rama}\n`;
+                    drawast += `nodoPrincipal -> ${dAST.nodo};`;
+                }
+
+                drawast += "\n}";
+
+                let tablaSimbol = `digraph TablaSimbolos {\n
+                    parent [shape = none\n
+                    label=<\n
+                    <table border= '1' cellspacing="0">\n
+                    <tr><td bgcolor="#FFD352">Identificador</td><td bgcolor="#FFD352">Tipo</td><td bgcolor="#FFD352">Tipo</td><td bgcolor="#FFD352">Entorno</td><td bgcolor="#FFD352">Linea</td><td bgcolor="#FFD352">Columna</td></tr>\n`;
+                    const idsExistentes = new Set();
+                    for(const fila of ListaTabla){
+                        if(!idsExistentes.has(fila.id)){
+                            tablaSimbol += `<tr><td>${fila.id}</td><td>${fila.tipo}</td><td>${fila.tipoPrimitivo}</td><td>${fila.entorno}</td><td>${fila.linea}</td><td>${fila.columna}</td></tr>\n`;
+                            idsExistentes.add(fila.id);
+                        }
+                    }
+                    tablaSimbol += `</table>>];\n}`;
+                res.json({consola: printList.join("\n"), errores:"no hay", ast: drawast, tablaSimbolos: tablaSimbol});
             } catch (error) {
                 console.log(error);
                 res.json({

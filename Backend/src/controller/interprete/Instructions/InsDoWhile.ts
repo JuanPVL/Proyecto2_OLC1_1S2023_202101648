@@ -14,4 +14,8 @@ export class InsDoWhile extends Instruction {
             valorR = this.condition.execute(env);
         } while(valorR.value);
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

@@ -21,4 +21,17 @@ export class AsignarValor extends Instruction {
             console.log("La variable no existe");
         }
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const nodoPrincipal = `nodoAsignar${id.toString()}`;
+        const nodoIDPrincipal = `nodoID${id.toString()}`;
+        const codigoAST:{rama:string,nodo:string} = this.value.drawAST();
+        let ramaAsignar = `${nodoPrincipal}[label="Asignar"];\n`
+        ramaAsignar += `${nodoIDPrincipal}[label="${this.id.toString()}"];\n`;
+        ramaAsignar += codigoAST.rama + "\n";
+        ramaAsignar += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;
+        ramaAsignar += `${nodoIDPrincipal} -> ${codigoAST.nodo};\n`;
+        return {rama:ramaAsignar,nodo:nodoPrincipal};
+    }
 }

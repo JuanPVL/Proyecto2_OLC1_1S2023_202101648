@@ -1,7 +1,7 @@
 
 export class TablaSimbolos {
 
-    constructor(public id:string, public tipo:string,public ambito:string, public linea:string, public columna:string) {
+    constructor(public id:string, public tipo:string,public tipoPrimitivo:string,public entorno:string, public linea:string, public columna:string) {
 
     }
 }

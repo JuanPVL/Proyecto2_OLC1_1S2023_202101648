@@ -10,4 +10,8 @@ export class Parametros extends Expression {
     public execute(env: Environment): Return {
         return {value: this.id, type: this.tipo}
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }

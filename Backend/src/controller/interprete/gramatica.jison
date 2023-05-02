@@ -47,6 +47,7 @@
 "length"           return "RLENGTH";
 "typeof"           return "RTYPEOF";
 "toString"         return "RTOSTRING";
+"return"           return "RRETURN";
 
 //tipos de variables
 "int"              return "RINT";
@@ -128,6 +129,7 @@
     const {Length} = require("./Expressions/Length");
     const {TypeOf} = require("./Expressions/TypeOf");
     const {ToString} = require("./Expressions/ToString");
+    const {EReturn} = require("./Expressions/EReturn");
     const {InsFor} = require("./Instructions/InsFor");
 %}
 
@@ -139,6 +141,7 @@
 %left 'DIFERENTE' 'MENORQUE' 'MAYORQUE' 'MENORIGUAL' 'MAYORIGUAL' 'IGUALIGUAL'
 %left 'MAS' 'MENOS'
 %left 'POR' 'DIVISION' 'MODULO'
+%left 'CORIZQ' 'CORDER'
 %right 'UMENOS' 'NOT'
 %start INICIO
 
@@ -159,14 +162,15 @@ INSTRUCCION
     : FUNCPRINT { $$ = $1; }
     | INSDECLARAR { $$ = $1; }
     | INSASIGNAR { $$ = $1; }
-    | LLAMARFUNCION { $$ = $1; }
+    | LLAMARFUNCION PCOMA { $$ = $1; }
     | GUARDARFUNCION { $$ = $1; }
     | INSTIF { $$ = $1; }
     | INSWHILE { $$ = $1; }
     | INSDOWHILE { $$ = $1; }
     | INSFOR { $$ = $1; }
     | INCREMENTODECREMENTO PCOMA { $$ = $1; }
-    | RMAIN LLAMARFUNCION { $$ = new InsMain($2,@1.first_line,@1.first_column); }
+    | RETORNO PCOMA { $$ = $1; }
+    | RMAIN LLAMARFUNCION PCOMA{ $$ = new InsMain($2,@1.first_line,@1.first_column); }
     //| error PCOMA
     //{ console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
 ;
@@ -218,6 +222,11 @@ INSFOR
     | RFOR PAIZQ INSASIGNAR EXPRESION PCOMA ASIGNARFOR PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
 ;
 
+RETORNO
+    : RRETURN {$$ = new EReturn(null,@1.first_line,@1.first_column); }
+    | RRETURN EXPRESION {$$ = new EReturn($2,@1.first_line,@1.first_column); }
+;
+
 INSSTATEMENT
     : LLAVEIZQ INSTRUCCIONES LLAVEDER   { $$ = new Statement($2,@1.first_line,@1.first_column); }
 ;
@@ -239,6 +248,7 @@ EXPRESION
     | ACCEDERVARIABLE { $$ = $1; }
     |INCREMENTODECREMENTO { $$ = $1; }
     | ARITMETICA       { $$ = $1; }
+    | LLAMARFUNCION { $$ = $1; }
     | TOLOWERUPPER     { $$ = $1; }
     | REDONDEO         { $$ = $1; }
     | TRUNCAR          { $$ = $1; }
@@ -250,9 +260,10 @@ EXPRESION
 ;
 
 LLAMARFUNCION
-    : ID PAIZQ PADER  PCOMA  { $$ = new LlamadaFuncion($1,[],@1.first_line,@1.first_column); }
-    | ID PAIZQ ARGUMENTOS PADER PCOMA { $$ = new LlamadaFuncion($1,$3,@1.first_line,@1.first_column); }
+    : ID PAIZQ PADER { $$ = new LlamadaFuncion($1,[],@1.first_line,@1.first_column); }
+    | ID PAIZQ ARGUMENTOS PADER { $$ = new LlamadaFuncion($1,$3,@1.first_line,@1.first_column); }
 ;
+
 
 ARGUMENTOS
     : ARGUMENTOS COMA EXPRESION  { $1.push($3); $$ = $1;}

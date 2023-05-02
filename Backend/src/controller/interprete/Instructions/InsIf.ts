@@ -15,4 +15,8 @@ export class InsIf extends Instruction {
             return this.inElse.execute(env);
         }
     }
+
+    public drawAST(): { rama: string; nodo: string; } {
+        return {rama:"",nodo:""};
+    }
 }
