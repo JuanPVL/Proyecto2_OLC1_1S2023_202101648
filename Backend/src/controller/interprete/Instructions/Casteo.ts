@@ -35,6 +35,16 @@ export class Casteo extends Instruction {
     }
 }
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoCasteo${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoIDCasteo${id2.toString()}`;
+        const codigoAST:{rama:string,nodo:string} = this.value.drawAST();
+        let ramaCasteo = `${nodoPrincipal}[label="Casteo"];\n`
+        ramaCasteo += `${nodoIDPrincipal}[label="${tipo[this.tipo]}"];\n`;
+        ramaCasteo += codigoAST.rama + "\n";
+        ramaCasteo += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;
+        ramaCasteo += `${nodoIDPrincipal} -> ${codigoAST.nodo};\n`;
+        return {rama:ramaCasteo,nodo:nodoPrincipal};
     }
 }
