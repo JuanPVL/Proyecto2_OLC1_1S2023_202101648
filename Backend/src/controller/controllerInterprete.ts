@@ -3,6 +3,9 @@ import { printList } from "./interprete/reports/PrintList";
 import { Environment } from "./interprete/abstract/Environment";
 import { ListaTabla } from "./interprete/reports/TablaSimbolos";
 import { ListaErrores, ListaErroresS } from "./interprete/reports/ErrorL";
+import { Funcion } from "./interprete/Instructions/Funcion";
+import { Declaration } from "./interprete/Instructions/Declaration";
+import { InsMain } from "./interprete/Instructions/Main";
 
 
 class InterpreteController {
@@ -24,10 +27,21 @@ class InterpreteController {
                 ListaTabla.splice(0,ListaTabla.length);
                 ListaErroresS.splice(0,ListaErroresS.length);
                 const globalEnv = new Environment(null,"Global");
-                for (const inst of ast) {
-                    inst.execute(globalEnv);
-                }
-
+                // for (const inst of ast) {
+                //     inst.execute(globalEnv);
+                // }
+                    for(const inst of ast){
+                        if(inst instanceof Declaration){
+                            inst.execute(globalEnv);
+                        } else if(inst instanceof Funcion){
+                            inst.execute(globalEnv);
+                        }
+                    }
+                    for(const inst of ast){
+                        if(inst instanceof InsMain){
+                            inst.execute(globalEnv);
+                        } 
+                    }
                 let drawast = `
                 digraph AST {
                     nodoPrincipal[label="AST"];\n
@@ -66,6 +80,14 @@ class InterpreteController {
                             Errores += `<tr><td>${fila.tipo}</td><td>${fila.descripcion}</td><td>${fila.linea}</td><td>${fila.columna}</td></tr>\n`;
                         }
                         Errores += `</table>>];\n}`;
+                        for (const fila of ListaErrores){
+                            let errorString = `${fila.tipo} ${fila.descripcion} en linea ${fila.linea} columna ${fila.columna}`;
+                            printList.push(errorString);
+                        }
+                        for (const fila of ListaErroresS){
+                            let errorString = `${fila.tipo} ${fila.descripcion} en linea ${fila.linea} columna ${fila.columna}`;
+                            printList.push(errorString);
+                        }
                 res.json({consola: printList.join("\n"), errores:Errores, ast: drawast, tablaSimbolos: tablaSimbol});
             } catch (error) {
                 console.log(error);

@@ -28,9 +28,10 @@ export class Incremento extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoIncremento${id.toString()}`;
-        const nodoIDPrincipal = `nodoID${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoID${id2.toString()}`;
         let ramaIncremento = `${nodoPrincipal}[label="Incremento"];\n`
         ramaIncremento += `${nodoIDPrincipal}[label="${this.id.toString()}"];\n`;
         ramaIncremento += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;

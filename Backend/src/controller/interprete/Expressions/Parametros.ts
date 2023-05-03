@@ -12,6 +12,13 @@ export class Parametros extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoParametros${id.toString()}`;
+        let ramaPa = `${nodoPrincipal}[label="${tipo[this.tipo]}"];\n`
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoIDPara${id2.toString()}`;
+        ramaPa += `${nodoIDPrincipal}[label="${this.id}"];\n`;
+        ramaPa += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;
+        return {rama:ramaPa,nodo:nodoPrincipal};
     }
 }

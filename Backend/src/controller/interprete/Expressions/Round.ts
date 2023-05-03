@@ -17,6 +17,12 @@ export class Round extends Expression{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoRound${id.toString()}`;
+        let ramaRound = `${nodoPrincipal}[label="Round"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaRound += codigoRama.rama;
+        ramaRound += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaRound,nodo:nodoPrincipal}; 
     }
 }

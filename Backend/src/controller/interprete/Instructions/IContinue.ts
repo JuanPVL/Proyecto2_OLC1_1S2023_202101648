@@ -12,7 +12,7 @@ export class IContinue extends Instruction{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100-0) + 0);
+        const id = Math.floor(Math.random() * (999-0) + 0);
         let nombreNodo = `nodoContinue${id.toString()}`;
         let rama = `${nombreNodo}[label="Continue"];`;
         return {rama:rama,nodo:nombreNodo};

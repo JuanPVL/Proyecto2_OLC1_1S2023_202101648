@@ -16,7 +16,7 @@ export class Print extends Instruction {
 
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoPrint${id.toString()}`;
         let ramaPrint = `${nodoPrincipal}[label="Print"];\n`
         const codigoRama:{rama:string,nodo:string} = this.expression.drawAST();

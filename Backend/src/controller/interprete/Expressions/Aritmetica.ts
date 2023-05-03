@@ -150,6 +150,31 @@ export class Aritmetica extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id =  Math.floor(Math.random() * (999 - 0) + 0);
+        const nombreNodo = `nodoAritmetica${id.toString()}`;
+        let ramaA = `${nombreNodo}[label="Aritmetica"];\n`;
+        if(this.operador == tipoAritmetica.MENOSUNARIO) {
+            const id2 =  Math.floor(Math.random() * (999 - 0) + 0);
+            const codigoRama = `nodoAritmeticaLix${id2.toString()}`;
+            let nodoMU = `${codigoRama}[label="Menos Unario"];\n`;
+            ramaA += nodoMU;
+            ramaA += `${nombreNodo} -> ${codigoRama};\n`;
+            const codigoRamas: {rama:string, nodo:string} = this.izquierdo.drawAST();
+            ramaA += codigoRamas.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas.nodo};\n`;
+        } else {
+            const codigoRamas: {rama:string, nodo:string} = this.izquierdo.drawAST();
+            ramaA += codigoRamas.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas.nodo};\n`;
+            const id2 =  Math.floor(Math.random() * (999 - 0) + 0);
+            const codigoRama = `nodoAritmeticaLop${id2.toString()}`;
+            let nodoOperador = `${codigoRama}[label="${tipoAritmetica[this.operador]}"];\n`;
+            ramaA += nodoOperador;
+            ramaA += `${nombreNodo} -> ${codigoRama};\n`;
+            const codigoRamas2: {rama:string, nodo:string} = this.derecho.drawAST();
+            ramaA += codigoRamas2.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas2.nodo};\n`;
+        }
+        return {rama: ramaA, nodo: nombreNodo};
     }
 }

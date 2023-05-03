@@ -1,9 +1,8 @@
 import React,{useEffect} from 'react';
 import Graphviz from 'graphviz-react';
-function Graph({dot}){
+function Graph3({dot}){
     /*useEffect(() => {
         d3.select("#graph-body").graphviz().renderDot(dot);
-        zoom:options;
     }, [dot]);
     return ( <div
         id="graph-body"
@@ -13,12 +12,7 @@ function Graph({dot}){
             alignItems: 'center',
         }}
     />);*/
-    return <Graphviz dot={dot} options={{
-        zoom: true,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        engine: "dot"
-      }} />;
+    return <Graphviz dot={dot} />;
 };
 
-export default Graph;
+export default Graph3;

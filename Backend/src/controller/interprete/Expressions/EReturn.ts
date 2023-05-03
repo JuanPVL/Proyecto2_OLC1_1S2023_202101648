@@ -18,6 +18,12 @@ export class EReturn extends Instruction {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nombreNodo = `nodoReturn${id.toString()}`;
+        let ramaReturn = `${nombreNodo}[label="Return"];`;
+        const codigoRama2 : {rama:string, nodo:string} = this.value.drawAST();
+        ramaReturn += codigoRama2.rama;
+        ramaReturn += `${nombreNodo} -> ${codigoRama2.nodo};\n`;
+        return {rama:ramaReturn, nodo:nombreNodo};
     }
 }

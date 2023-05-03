@@ -13,6 +13,12 @@ export class InsMain extends Instruction{
 
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoMain${id.toString()}`;
+        const nodoFuncion = this.funcion.drawAST();
+        let ramaMain = `${nodoPrincipal}[label="Main"];\n`
+        ramaMain += `${nodoPrincipal} -> ${nodoFuncion.nodo};\n`;
+        ramaMain += nodoFuncion.rama;
+        return {rama:ramaMain,nodo:nodoPrincipal};
     }
 }

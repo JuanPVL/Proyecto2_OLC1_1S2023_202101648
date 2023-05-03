@@ -37,6 +37,11 @@ export class LlamadaFuncion extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoLlamadaFunc${id.toString()}`;
+        let ramaLlamada = `${nodoPrincipal}[label="Llamada Funcion"];`;
+        ramaLlamada += `nodoEXLlama${nodoPrincipal}[label="${this.id}"];`;
+        ramaLlamada += `${nodoPrincipal} -> nodoEXLlama${nodoPrincipal};\n`;
+        return {rama:ramaLlamada,nodo:nodoPrincipal};
     }
 }

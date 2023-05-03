@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import GraphAST from "../components/Reports/GraphAST";
 import GraphTS from "../components/Reports/GraphTS";
+import GraphError from "../components/Reports/GraphError";
 
 function Home() {
     const [editor, setEditor] = useState("");
@@ -14,8 +15,11 @@ function Home() {
     const [show, setShow] = useState(false);
     const [dot, setDot] = useState("");
     const [dot2, setDot2] = useState("");
+    const [dot3, setDot3] = useState("");
     const [lgShow, setLgShow] = useState(false);
+    const [ErShow, setErShow] = useState(false);
   const handleClose2 = () => setLgShow(false);
+  const handleClose3 = () => setErShow(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -37,6 +41,7 @@ function Home() {
                 console.log("errores",errores);
                 setDot(ast);
                 setDot2(tablaSimbolos);
+                setDot3(errores);
                 setConsola(consola);
             }
         } catch (error) {
@@ -76,6 +81,9 @@ function Home() {
                 <Col>
                 <Button onClick={() => setLgShow(true)}>Tabla Simbolos</Button>
                 </Col>
+                <Col>
+                <Button onClick={() => setErShow(true)}>Errores</Button>
+                </Col>
             </Row>
             <Modal
         show={show}
@@ -111,6 +119,25 @@ function Home() {
         <Modal.Body><GraphTS dot={dot2}/></Modal.Body>
         <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose2}>
+                        Close
+                    </Button>
+                    </Modal.Footer>
+      </Modal>
+      <Modal
+        show={ErShow}
+        onHide={handleClose3}
+        fullscreen={true}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Tabla de Errores
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body><GraphError dot={dot3}/></Modal.Body>
+        <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose3}>
                         Close
                     </Button>
                     </Modal.Footer>

@@ -17,6 +17,12 @@ export class Length extends Expression{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoLength${id.toString()}`;
+        let ramaLength = `${nodoPrincipal}[label="Length"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaLength += codigoRama.rama;
+        ramaLength += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaLength,nodo:nodoPrincipal}; 
     }
 }

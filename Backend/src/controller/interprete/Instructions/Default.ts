@@ -11,6 +11,9 @@ export class Default extends Instruction{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999-0) + 0);
+        let nombreNodo = `nodoDefaultXD${id.toString()}`;
+        let rama = `${nombreNodo}[label="Default"];`;
+        return {rama:rama,nodo:nombreNodo};
     }
 }

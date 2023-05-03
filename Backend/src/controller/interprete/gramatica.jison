@@ -35,6 +35,7 @@
     const {Default} = require("./Instructions/Default");
     const {ErrorLexico} = require("./reports/ErrorLexico");
     const {ErrorSinta} = require("./reports/ErrorSint");
+    const {Casteo} = require("./Instructions/Casteo");
 %}
 /* Definicion Léxica */
 %lex
@@ -199,14 +200,20 @@ FUNCPRINT
 INSDECLARAR
     : TIPO ID PCOMA { $$ = new Declaration($2,$1,null,@1.first_line,@1.first_column); }
     | TIPO ID IGUAL EXPRESION PCOMA { $$ = new Declaration($2,$1,$4,@1.first_line,@1.first_column); }
+    | TIPO ID IGUAL CASTEO PCOMA { $$ = new Declaration($2,$1,$4,@1.first_line,@1.first_column); }
 ;
 
 INSASIGNAR
     : ID IGUAL EXPRESION PCOMA { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
+    | ID IGUAL CASTEO PCOMA { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
 ;
 
 ASIGNARFOR
     : ID IGUAL EXPRESION { $$ = new AsignarValor($1,$3,@1.first_line,@1.first_column); }
+;
+
+CASTEO
+    : PAIZQ TIPO PADER EXPRESION { $$ = new Casteo($2,$4,@1.first_line,@1.first_column); }
 ;
 
 GUARDARFUNCION

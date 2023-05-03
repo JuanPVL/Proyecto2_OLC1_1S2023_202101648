@@ -35,9 +35,10 @@ export class Declaration extends Instruction {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoDeclarar${id.toString()}`;
-        const nodoIDPrincipal = `nodoID${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoIDD${id2.toString()}`;
         if(this.value != null) {
             const codigoAST:{rama:string,nodo:string} = this.value.drawAST();
             let ramaDeclarar = `${nodoPrincipal}[label="Declarar"];\n`

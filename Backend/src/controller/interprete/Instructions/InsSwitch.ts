@@ -31,6 +31,29 @@ export class InsSwitch extends Instruction {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nombreNodo = `nodoSwitch${id.toString()}`;
+        let ramaWhile = `${nombreNodo}[label="Switch"];`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoCOndicion = `nodeConditionW${id2.toString()}`;
+        let ramaCondicion = `${nodoCOndicion}[label="Condicion"];\n`;
+        ramaWhile += ramaCondicion;
+        ramaWhile += `${nombreNodo} -> ${nodoCOndicion};\n`;
+        const codigoRama2 : {rama:string, nodo:string} = this.condicion.drawAST();
+        ramaWhile += codigoRama2.rama;
+        ramaWhile += `${nodoCOndicion} -> ${codigoRama2.nodo};\n`;
+
+        for(let i=0;i<this.casos.length;i++){
+            const aux = this.casos[i];
+            const id3 = Math.floor(Math.random() * (999 - 0) + 0);
+            const nodoCase = `nodeCaseW${id3.toString()}`;
+            let ramaCase = `${nodoCase}[label="Case"];\n`;
+            ramaWhile += ramaCase;
+            ramaWhile += `${nombreNodo} -> ${nodoCase};\n`;
+            const valorcondicion = aux[0].drawAST();
+            ramaWhile += valorcondicion.rama;
+            ramaWhile += `${nodoCase} -> ${valorcondicion.nodo};\n`;
+        }
+        return {rama:ramaWhile,nodo:nombreNodo};
     }
 }

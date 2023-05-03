@@ -28,7 +28,7 @@ export class Primitivo extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoPrimitivo${id.toString()}`;
         const ramaPrimitivo = `${nodoPrincipal}[label="${this.value.toString()}"];\n`
         // nodoPrimitivo${nodoPrincipal}[label="${this.value.toString()}"];\n

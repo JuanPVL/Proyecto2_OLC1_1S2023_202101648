@@ -12,9 +12,9 @@ export class IBreak extends Instruction{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100-0) + 0);
-        let nombreNodo = `nodoBreak${id.toString()}`;
-        let rama = `${nombreNodo}[label="Break"];`;
+        const id = Math.floor(Math.random() * (999-0) + 0);
+        let nombreNodo = `nodoBreak${id.toString()}\n`;
+        let rama = `${nombreNodo}[label="Break"];\n`;
         return {rama:rama,nodo:nombreNodo};
     }
 }

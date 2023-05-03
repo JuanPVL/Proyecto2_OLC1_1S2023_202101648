@@ -23,9 +23,10 @@ export class AsignarValor extends Instruction {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoAsignar${id.toString()}`;
-        const nodoIDPrincipal = `nodoID${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoIDAsi${id2.toString()}`;
         const codigoAST:{rama:string,nodo:string} = this.value.drawAST();
         let ramaAsignar = `${nodoPrincipal}[label="Asignar"];\n`
         ramaAsignar += `${nodoIDPrincipal}[label="${this.id.toString()}"];\n`;

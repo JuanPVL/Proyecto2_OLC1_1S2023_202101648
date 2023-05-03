@@ -30,6 +30,12 @@ export class TypeOf extends Expression{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoTypeoff${id.toString()}`;
+        let ramaTypeoff = `${nodoPrincipal}[label="Typeoff"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaTypeoff += codigoRama.rama;
+        ramaTypeoff += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaTypeoff,nodo:nodoPrincipal}; 
     }
 }

@@ -17,6 +17,12 @@ export class Truncate extends Expression{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoTruncate${id.toString()}`;
+        let ramaTruncate = `${nodoPrincipal}[label="Truncate"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaTruncate += codigoRama.rama;
+        ramaTruncate += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaTruncate,nodo:nodoPrincipal}; 
     }
 }

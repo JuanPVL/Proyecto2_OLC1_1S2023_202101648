@@ -42,24 +42,34 @@ export class InsFor extends Instruction {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nombreNodo = `nodoFor${id.toString()}`;
         let ramaFor = `${nombreNodo}[label="For"];`;
         const codigoRama : {rama:string, nodo:string} = this.declaracion.drawAST();
         ramaFor += codigoRama.rama;
         ramaFor += `${nombreNodo} -> ${codigoRama.nodo};\n`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoCOndicion = `nodeConditionFOr${id2.toString()}`;
+        let ramaCondicion = `${nodoCOndicion}[label="Condicion"];\n`;
+        ramaFor += ramaCondicion;
+        ramaFor += `${nombreNodo} -> ${nodoCOndicion};\n`;
         const codigoRama2 : {rama:string, nodo:string} = this.condicion.drawAST();
         ramaFor += codigoRama2.rama;
-        ramaFor += `${nombreNodo} -> ${codigoRama2.nodo};\n`;
+        ramaFor += `${nodoCOndicion} -> ${codigoRama2.nodo};\n`;
         const codigoRama3 : {rama:string, nodo:string} = this.incremento.drawAST();
         ramaFor += codigoRama3.rama;
         ramaFor += `${nombreNodo} -> ${codigoRama3.nodo};\n`;
 
         const codeRamaI : {rama:string, nodo:string} = this.statement.drawAST();
+        const id3 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoSta = `nodeStatementFor${id3.toString()}`
+        let ramaStatement = `${nodoSta}[label="Statement"];\n`;
+        ramaFor += ramaStatement;
+        ramaFor += `${nombreNodo} -> ${nodoSta};\n`;
         ramaFor += codeRamaI.rama;
         const ramaExtra = codeRamaI.nodo.split("nodo");
         for(let i = 1; i < ramaExtra.length; i++){
-            ramaFor += `${nombreNodo} -> ${ramaExtra[i]};\n`;
+            ramaFor += `${nodoSta} -> nodo${ramaExtra[i]};\n`;
         }
         return {rama:ramaFor,nodo:nombreNodo};
     }

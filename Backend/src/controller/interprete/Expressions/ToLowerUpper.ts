@@ -21,6 +21,23 @@ export class ToLowerUpper extends Expression{
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        return {rama:"",nodo:""};
+        if(this.tipo == 1){
+            const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoToLower${id.toString()}`;
+        let ramaPToLower = `${nodoPrincipal}[label="ToLower"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaPToLower += codigoRama.rama;
+        ramaPToLower += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaPToLower,nodo:nodoPrincipal}; 
+        } else if(this.tipo == 2){
+            const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoToUpper${id.toString()}`;
+        let ramaPToUpper = `${nodoPrincipal}[label="ToUpper"];\n`
+        const codigoRama:{rama:string,nodo:string} = this.expresion.drawAST();
+        ramaPToUpper += codigoRama.rama;
+        ramaPToUpper += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        return {rama:ramaPToUpper,nodo:nodoPrincipal};
+        }
+       return {rama:"",nodo:""};
     }
 }

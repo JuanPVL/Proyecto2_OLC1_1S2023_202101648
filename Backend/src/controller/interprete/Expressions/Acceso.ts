@@ -18,9 +18,10 @@ export class Acceso extends Expression {
     }
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
         const nodoPrincipal = `nodoAcceso${id.toString()}`;
-        const nodoIDPrincipal = `nodoID${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0)
+        const nodoIDPrincipal = `nodoID${id2.toString()}`;
         let ramaAcceso = `${nodoPrincipal}[label="Acceso"];\n`
         ramaAcceso += `${nodoIDPrincipal}[label="${this.id.toString()}"];\n`;
         ramaAcceso += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;
