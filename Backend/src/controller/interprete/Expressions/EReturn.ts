@@ -11,6 +11,7 @@ export class EReturn extends Instruction {
     public execute(env: Environment){
         if(this.value != null && this.value != undefined){
             let rvalue = this.value.execute(env);
+            //console.log("obtengo el valor de return")
             return {value:rvalue.value, type: tipo.RETURN, tipo:rvalue.type};
         }
         return this

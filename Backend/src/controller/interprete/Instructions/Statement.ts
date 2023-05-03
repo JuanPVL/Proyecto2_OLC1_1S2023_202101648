@@ -16,20 +16,23 @@ export class Statement extends Instruction {
                }
             }catch (error) {
                 console.log("Error en la ejecucion de la instruccion");
+                if(error instanceof Error){
+                    console.log(error.stack);
+                }
             }
         }
     }
 
 
     public drawAST(): { rama: string; nodo: string; } {
-        const id = Math.floor(Math.random() * (100 - 0) + 0);
-        const nodoPrincipal = `nodoStatement${id.toString()}`;
-        let ramaStatement = `${nodoPrincipal}[label="Statement"];\n`
-        for(const instrucciones of this.body) {
-            const codigoRama:{rama:string,nodo:string} = instrucciones.drawAST();
-            ramaStatement += codigoRama.rama;
-            ramaStatement += `${nodoPrincipal} -> ${codigoRama.nodo};\n`
+        let rama = "";
+        let nodo = "";
+        for(let i = 0; i < this.body.length; i++){
+            let codeRamaS:{rama:string, nodo:string} = this.body[i].drawAST();
+            rama += codeRamaS.rama;
+            nodo += codeRamaS.nodo;
         }
-        return {rama:ramaStatement,nodo:nodoPrincipal};
+        return {rama:rama,nodo:nodo};
+        
     }
 }

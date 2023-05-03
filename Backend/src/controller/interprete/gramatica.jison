@@ -50,6 +50,10 @@
 "return"           return "RRETURN";
 "continue"         return "RCONTINUE";
 "break"            return "RBREAK";
+"switch"           return "RSWITCH";
+"case"             return "RCASE";
+"default"          return "RDEFAULT";
+
 
 //tipos de variables
 "int"              return "RINT";
@@ -135,6 +139,8 @@
     const {IContinue} = require("./Instructions/IContinue");
     const {IBreak} = require("./Instructions/IBreak");
     const {InsFor} = require("./Instructions/InsFor");
+    const {InsSwitch} = require("./Instructions/InsSwitch");
+    const {Default} = require("./Instructions/Default");
 %}
 
 //Precedencias
@@ -172,6 +178,7 @@ INSTRUCCION
     | INSWHILE { $$ = $1; }
     | INSDOWHILE { $$ = $1; }
     | INSFOR { $$ = $1; }
+    | INSSWITCH { $$ = $1; }
     | INCREMENTODECREMENTO PCOMA { $$ = $1; }
     | RETORNO PCOMA { $$ = $1; }
     | RCONTINUE PCOMA { $$ = new IContinue(@1.first_line,@1.first_column); }
@@ -226,6 +233,22 @@ INSFOR
     | RFOR PAIZQ INSASIGNAR EXPRESION PCOMA EXPRESION PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
     | RFOR PAIZQ INSDECLARAR EXPRESION PCOMA ASIGNARFOR PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
     | RFOR PAIZQ INSASIGNAR EXPRESION PCOMA ASIGNARFOR PADER INSSTATEMENT { $$ = new InsFor($3,$4,$6,$8,@1.first_line,@1.first_column); }
+;
+
+INSSWITCH
+    : RSWITCH PAIZQ EXPRESION PADER LLAVEIZQ CASOS LLAVEDER { $$ = new InsSwitch($3,$6,@1.first_line,@1.first_column); }
+;
+
+CASOS
+    :RCASE EXPRESION DOSPUNTOS CASEST {$$ = [];$$.push([$2,$4]);}
+    |CASOS RCASE EXPRESION DOSPUNTOS CASEST {$$=$1;$$.push([$3,$5]);}
+    |RDEFAULT DOSPUNTOS CASEST {$$ = new Default(@1.first_line,@1.first_column);}
+    |CASOS RDEFAULT DOSPUNTOS CASEST {$$=$1;$$.push([new Default(@1.first_line, @1.first_column),$4]);}
+;
+
+CASEST
+    :INSTRUCCIONES    { $$ = new Statement($1, @1.first_line, @1.first_column)}
+    |                 {$$ = new Statement([], @1.first_line, @1.first_column)}
 ;
 
 RETORNO

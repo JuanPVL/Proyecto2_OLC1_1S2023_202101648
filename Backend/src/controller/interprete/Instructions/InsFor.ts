@@ -40,35 +40,24 @@ export class InsFor extends Instruction {
 
     public drawAST(): { rama: string; nodo: string; } {
         const id = Math.floor(Math.random() * (100 - 0) + 0);
-        const nodoPrincipal = `nodoFor${id.toString()}`;
-        const nodoDeclaracion = `nodoDeclaracion${id.toString()}`;
-        const nodoCondicion = `nodoCondicion${id.toString()}`;
-        const nodoIncremento = `nodoIncremento${id.toString()}`;
-        const nodoStatement = `nodoStatement${id.toString()}`;
-        const nodoIDIncremento = `nodoIDIncremento${id.toString()}`;
-        const nodoIDCondicion = `nodoIDCondicion${id.toString()}`;
-        const nodoIDDeclaracion = `nodoIDDeclaracion${id.toString()}`;
-        const codigoAST:{rama:string,nodo:string} = this.statement.drawAST();
-        let ramaFor = `${nodoPrincipal}[label="For"];\n`
-        ramaFor += `${nodoDeclaracion}[label="Declaracion"];\n`;
-        ramaFor += `${nodoIDDeclaracion}[label="${this.declaracion.toString()}"];\n`;
-        ramaFor += `${nodoDeclaracion} -> ${nodoIDDeclaracion};\n`;
-        ramaFor += `${nodoIDDeclaracion} -> ${codigoAST.nodo};\n`;
-        ramaFor += `${nodoCondicion}[label="Condicion"];\n`;
-        ramaFor += `${nodoIDCondicion}[label="${this.condicion.toString()}"];\n`;
-        ramaFor += `${nodoCondicion} -> ${nodoIDCondicion};\n`;
-        ramaFor += `${nodoIDCondicion} -> ${codigoAST.nodo};\n`;
-        ramaFor += `${nodoIncremento}[label="Incremento"];\n`;
-        ramaFor += `${nodoIDIncremento}[label="${this.incremento.toString()}"];\n`;
-        ramaFor += `${nodoIncremento} -> ${nodoIDIncremento};\n`;
-        ramaFor += `${nodoIDIncremento} -> ${codigoAST.nodo};\n`;
-        ramaFor += `${nodoStatement}[label="Statement"];\n`;
-        ramaFor += codigoAST.rama + "\n";
-        ramaFor += `${nodoPrincipal} -> ${nodoDeclaracion};\n`;
-        ramaFor += `${nodoPrincipal} -> ${nodoCondicion};\n`;
-        ramaFor += `${nodoPrincipal} -> ${nodoIncremento};\n`;
-        ramaFor += `${nodoPrincipal} -> ${nodoStatement};\n`;
-        
-        return {rama:ramaFor,nodo:nodoPrincipal};
+        const nombreNodo = `nodoFor${id.toString()}`;
+        let ramaFor = `${nombreNodo}[label="For"];`;
+        const codigoRama : {rama:string, nodo:string} = this.declaracion.drawAST();
+        ramaFor += codigoRama.rama;
+        ramaFor += `${nombreNodo} -> ${codigoRama.nodo};\n`;
+        const codigoRama2 : {rama:string, nodo:string} = this.condicion.drawAST();
+        ramaFor += codigoRama2.rama;
+        ramaFor += `${nombreNodo} -> ${codigoRama2.nodo};\n`;
+        const codigoRama3 : {rama:string, nodo:string} = this.incremento.drawAST();
+        ramaFor += codigoRama3.rama;
+        ramaFor += `${nombreNodo} -> ${codigoRama3.nodo};\n`;
+
+        const codeRamaI : {rama:string, nodo:string} = this.statement.drawAST();
+        ramaFor += codeRamaI.rama;
+        const ramaExtra = codeRamaI.nodo.split("nodo");
+        for(let i = 1; i < ramaExtra.length; i++){
+            ramaFor += `${nombreNodo} -> ${ramaExtra[i]};\n`;
+        }
+        return {rama:ramaFor,nodo:nombreNodo};
     }
 }
