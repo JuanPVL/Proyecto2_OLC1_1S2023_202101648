@@ -1,5 +1,7 @@
 import { Instruction } from "../abstract/Instruction";
 import { Environment } from "../abstract/Environment";
+import { Incremento } from "../Expressions/Incremento";
+import { Decremento } from "../Expressions/Decremento";
 
 export class Statement extends Instruction {
     constructor(private body: Array<Instruction>, line:number, column: number){
@@ -7,22 +9,25 @@ export class Statement extends Instruction {
     }
 
     public execute(env: Environment) {
-        const newEnv = new Environment(env,"Local");
-        for(const instrucciones of this.body) {
+        const newEnv = new Environment(env, "Local");
+        for (const instrucciones of this.body) {
             try {
-               const dato = instrucciones.execute(newEnv);
-               if(dato != null && dato != undefined) {
-                return dato;
-               }
-            }catch (error) {
+                if (instrucciones instanceof Incremento || instrucciones instanceof Decremento) {
+                    instrucciones.execute(newEnv);
+                } else {
+                    const dato = instrucciones.execute(newEnv);
+                    if (dato != null && dato != undefined) {
+                        return dato;
+                    }
+                }
+            } catch (error) {
                 console.log("Error en la ejecucion de la instruccion");
-                if(error instanceof Error){
+                if (error instanceof Error) {
                     console.log(error.stack);
                 }
             }
         }
     }
-
 
     public drawAST(): { rama: string; nodo: string; } {
         let rama = "";

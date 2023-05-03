@@ -1,7 +1,6 @@
 import { Instruction } from "../abstract/Instruction";
 import { Environment } from "../abstract/Environment";
 import { Expression } from "../abstract/Expression";
-import { Caso } from "./Caso";
 import { IBreak } from "./IBreak";
 import { Default } from "./Default";
 

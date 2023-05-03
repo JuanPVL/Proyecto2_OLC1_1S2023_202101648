@@ -5,3 +5,4 @@ export class ErrorL {
 }
 
 export let ListaErrores:Array<ErrorL> = [];
+export let ListaErroresS:Array<ErrorL> = [];

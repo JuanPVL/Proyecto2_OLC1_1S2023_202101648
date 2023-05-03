@@ -24,12 +24,15 @@ export class InsFor extends Instruction {
                 }
                const element = this.statement.execute(env);
                if (element instanceof IBreak) {
+                //console.log("Estoy en if break")
                 break cicloPrincipal;
                } 
                else if (element instanceof IContinue) {
+                //console.log("Estoy en if continue")
                     this.incremento.execute(env);
                     continue cicloPrincipal;
-               } else if( element instanceof EReturn){
+               } else if(element != null && element != undefined){
+                //console.log("Estoy en if return")
                     return element;
                }
                

@@ -34,6 +34,7 @@ function Home() {
                 console.log(consola);
                 console.log("ast",ast);
                 console.log("tablaS",tablaSimbolos);
+                console.log("errores",errores);
                 setDot(ast);
                 setDot2(tablaSimbolos);
                 setConsola(consola);

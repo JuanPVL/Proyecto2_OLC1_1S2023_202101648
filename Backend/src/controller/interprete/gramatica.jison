@@ -1,3 +1,41 @@
+%{
+    const {Print} = require("./Instructions/Print");
+    const {Primitivo} = require("./Expressions/Primitivo");
+    const {tipo} = require("./abstract/Return");
+    const {Declaration} = require("./Instructions/Declaration");
+    const {Acceso} = require("./Expressions/Acceso");
+    const {Aritmetica} = require("./Expressions/Aritmetica");
+    const {tipoAritmetica} = require("./utils/TipoAritmetica");
+    const {Statement} = require("./Instructions/Statement");
+    const {Funcion} = require("./Instructions/Funcion");
+    const {Parametros} = require("./Expressions/Parametros");
+    const {LlamadaFuncion} = require("./Expressions/LlamadaFuncion");
+    const {Relacional} = require("./Expressions/Relacional");
+    const {tipoRelacional} = require("./utils/TipoRelacional");
+    const {Logica} = require("./Expressions/Logica");
+    const {tipoLogico} = require("./utils/TipoLogico");
+    const {InsIf} = require("./Instructions/InsIf");
+    const {InWhile} = require("./Instructions/InsWhile");
+    const {InsDoWhile} = require("./Instructions/InsDoWhile");
+    const {InsMain} = require("./Instructions/Main");
+    const {AsignarValor} = require("./Instructions/AsignarValor");
+    const {Incremento} = require("./Expressions/Incremento");
+    const {Decremento} = require("./Expressions/Decremento");
+    const {ToLowerUpper} = require("./Expressions/ToLowerUpper");
+    const {Round} = require("./Expressions/Round");
+    const {Truncate} = require("./Expressions/Truncate");
+    const {Length} = require("./Expressions/Length");
+    const {TypeOf} = require("./Expressions/TypeOf");
+    const {ToString} = require("./Expressions/ToString");
+    const {EReturn} = require("./Expressions/EReturn");
+    const {IContinue} = require("./Instructions/IContinue");
+    const {IBreak} = require("./Instructions/IBreak");
+    const {InsFor} = require("./Instructions/InsFor");
+    const {InsSwitch} = require("./Instructions/InsSwitch");
+    const {Default} = require("./Instructions/Default");
+    const {ErrorLexico} = require("./reports/ErrorLexico");
+    const {ErrorSinta} = require("./reports/ErrorSint");
+%}
 /* Definicion Léxica */
 %lex
 
@@ -102,46 +140,13 @@
 
 <<EOF>>                return "EOF";
 
-. {console.error('Este es un error Léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
+.                       { 
+ errorL = new ErrorLexico(yytext,  yylloc.first_line, yylloc.first_column ); 
+ console.log("Error Lexico",errorL)
+ errorL.execute();
+  console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
 /lex
 
-
-%{
-    const {Print} = require("./Instructions/Print");
-    const {Primitivo} = require("./Expressions/Primitivo");
-    const {tipo} = require("./abstract/Return");
-    const {Declaration} = require("./Instructions/Declaration");
-    const {Acceso} = require("./Expressions/Acceso");
-    const {Aritmetica} = require("./Expressions/Aritmetica");
-    const {tipoAritmetica} = require("./utils/TipoAritmetica");
-    const {Statement} = require("./Instructions/Statement");
-    const {Funcion} = require("./Instructions/Funcion");
-    const {Parametros} = require("./Expressions/Parametros");
-    const {LlamadaFuncion} = require("./Expressions/LlamadaFuncion");
-    const {Relacional} = require("./Expressions/Relacional");
-    const {tipoRelacional} = require("./utils/TipoRelacional");
-    const {Logica} = require("./Expressions/Logica");
-    const {tipoLogico} = require("./utils/TipoLogico");
-    const {InsIf} = require("./Instructions/InsIf");
-    const {InWhile} = require("./Instructions/InsWhile");
-    const {InsDoWhile} = require("./Instructions/InsDoWhile");
-    const {InsMain} = require("./Instructions/Main");
-    const {AsignarValor} = require("./Instructions/AsignarValor");
-    const {Incremento} = require("./Expressions/Incremento");
-    const {Decremento} = require("./Expressions/Decremento");
-    const {ToLowerUpper} = require("./Expressions/ToLowerUpper");
-    const {Round} = require("./Expressions/Round");
-    const {Truncate} = require("./Expressions/Truncate");
-    const {Length} = require("./Expressions/Length");
-    const {TypeOf} = require("./Expressions/TypeOf");
-    const {ToString} = require("./Expressions/ToString");
-    const {EReturn} = require("./Expressions/EReturn");
-    const {IContinue} = require("./Instructions/IContinue");
-    const {IBreak} = require("./Instructions/IBreak");
-    const {InsFor} = require("./Instructions/InsFor");
-    const {InsSwitch} = require("./Instructions/InsSwitch");
-    const {Default} = require("./Instructions/Default");
-%}
 
 //Precedencias
 %left 'DECREMENTO' 'INCREMENTO'
@@ -184,8 +189,7 @@ INSTRUCCION
     | RCONTINUE PCOMA { $$ = new IContinue(@1.first_line,@1.first_column); }
     | RBREAK PCOMA { $$ = new IBreak(@1.first_line,@1.first_column); }
     | RMAIN LLAMARFUNCION PCOMA{ $$ = new InsMain($2,@1.first_line,@1.first_column); }
-    //| error PCOMA
-    //{ console.error('Este es un error sintactico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yyloc.first_column);}
+    | error { $$ = new ErrorSinta(yytext,@1.first_line,@1.first_column);}
 ;
 
 FUNCPRINT
