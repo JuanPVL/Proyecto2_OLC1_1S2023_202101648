@@ -6,4 +6,8 @@ export declare class Parametros extends Expression {
     private id;
     constructor(tipo: tipo, id: string, line: number, column: number);
     execute(env: Environment): Return;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

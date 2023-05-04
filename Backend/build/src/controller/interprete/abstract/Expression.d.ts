@@ -5,4 +5,8 @@ export declare abstract class Expression {
     column: number;
     constructor(line: number, column: number);
     abstract execute(env: Environment): Return;
+    abstract drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

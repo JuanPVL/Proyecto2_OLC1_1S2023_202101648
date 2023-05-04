@@ -3,10 +3,14 @@ import { Environment } from "../abstract/Environment";
 import { Expression } from "../abstract/Expression";
 import { tipo } from "../abstract/Return";
 export declare class Funcion extends Instruction {
-    private tipo;
+    tipo: tipo;
     private id;
     parametros: Array<Expression>;
     statement: Instruction;
     constructor(tipo: tipo, id: string, parametros: Array<Expression>, statement: Instruction, line: number, column: number);
     execute(env: Environment): void;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

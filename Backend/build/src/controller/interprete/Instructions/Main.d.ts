@@ -5,4 +5,8 @@ export declare class InsMain extends Instruction {
     funcion: LlamadaFuncion;
     constructor(funcion: LlamadaFuncion, linea: number, columna: number);
     execute(env: Environment): void;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

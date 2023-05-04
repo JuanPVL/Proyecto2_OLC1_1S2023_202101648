@@ -5,5 +5,9 @@ export declare class InWhile extends Instruction {
     private condition;
     private statement;
     constructor(condition: Expression, statement: Instruction, line: number, column: number);
-    execute(env: Environment): void;
+    execute(env: Environment): any;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

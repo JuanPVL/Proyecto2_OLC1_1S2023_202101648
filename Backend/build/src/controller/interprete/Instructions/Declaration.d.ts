@@ -8,4 +8,8 @@ export declare class Declaration extends Instruction {
     private value;
     constructor(id: string, tipo: tipo, value: Expression | null, linea: number, columna: number);
     execute(env: Environment): any;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

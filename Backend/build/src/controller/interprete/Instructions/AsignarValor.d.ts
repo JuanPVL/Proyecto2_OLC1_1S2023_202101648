@@ -6,4 +6,8 @@ export declare class AsignarValor extends Instruction {
     private value;
     constructor(id: string, value: Expression, linea: number, columna: number);
     execute(env: Environment): any;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

@@ -7,4 +7,8 @@ export declare class InsIf extends Instruction {
     private inElse;
     constructor(condicion: Expression, statement: Instruction, inElse: Instruction, linea: number, columna: number);
     execute(env: Environment): any;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

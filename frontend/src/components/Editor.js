@@ -6,11 +6,11 @@ import { aura } from '@uiw/codemirror-theme-aura';
 function Editor(props) {
   const onChange = React.useCallback((value, viewUpdate) => {
     props.input(value);
-    console.log('value:', value);
+    //console.log('value:', value);
   }, []);
   return (
     <CodeMirror
-      value="//TODO - Add code here"
+      value={props.value}
       height="450px"
       width='500px'
       maxWidth='500px'

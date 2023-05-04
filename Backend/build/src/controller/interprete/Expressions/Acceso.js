@@ -17,5 +17,15 @@ class Acceso extends Expression_1.Expression {
             return { value: null, type: Return_1.tipo.NULL };
         }
     }
+    drawAST() {
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoAcceso${id.toString()}`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoIDPrincipal = `nodoID${id2.toString()}`;
+        let ramaAcceso = `${nodoPrincipal}[label="Acceso"];\n`;
+        ramaAcceso += `${nodoIDPrincipal}[label="${this.id.toString()}"];\n`;
+        ramaAcceso += `${nodoPrincipal} -> ${nodoIDPrincipal};\n`;
+        return { rama: ramaAcceso, nodo: nodoPrincipal };
+    }
 }
 exports.Acceso = Acceso;

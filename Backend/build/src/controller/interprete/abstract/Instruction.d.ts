@@ -4,4 +4,8 @@ export declare abstract class Instruction {
     column: number;
     constructor(line: number, column: number);
     abstract execute(env: Environment): any;
+    abstract drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ListaTabla = exports.TablaSimbolos = void 0;
 class TablaSimbolos {
-    constructor(id, tipo, ambito, linea, columna) {
+    constructor(id, tipo, tipoPrimitivo, entorno, linea, columna) {
         this.id = id;
         this.tipo = tipo;
-        this.ambito = ambito;
+        this.tipoPrimitivo = tipoPrimitivo;
+        this.entorno = entorno;
         this.linea = linea;
         this.columna = columna;
     }

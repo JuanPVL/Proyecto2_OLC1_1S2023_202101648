@@ -28,5 +28,13 @@ class Primitivo extends Expression_1.Expression {
                 return { value: null, type: Return_1.tipo.NULL };
         }
     }
+    drawAST() {
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoPrimitivo${id.toString()}`;
+        const ramaPrimitivo = `${nodoPrincipal}[label="${this.value.toString()}"];\n`;
+        // nodoPrimitivo${nodoPrincipal}[label="${this.value.toString()}"];\n
+        // ${nodoPrincipal} -> nodoPrimitivo${nodoPrincipal};\n;
+        return { rama: ramaPrimitivo, nodo: nodoPrincipal };
+    }
 }
 exports.Primitivo = Primitivo;

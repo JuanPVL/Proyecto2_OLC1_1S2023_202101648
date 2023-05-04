@@ -8,4 +8,8 @@ export declare class Aritmetica extends Expression {
     private operador;
     constructor(izquierdo: Expression, derecho: Expression, operador: tipoAritmetica, linea: number, columna: number);
     execute(env: Environment): Return;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

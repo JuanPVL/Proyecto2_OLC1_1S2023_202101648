@@ -5,4 +5,8 @@ export declare class LlamadaFuncion extends Expression {
     private argumentos;
     constructor(id: string, argumentos: Array<Expression>, line: number, column: number);
     execute(env: Environment): any;
+    drawAST(): {
+        rama: string;
+        nodo: string;
+    };
 }

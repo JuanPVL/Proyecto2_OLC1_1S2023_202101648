@@ -80,5 +80,22 @@ class Relacional extends Expression_1.Expression {
         }
         return { value: null, type: Return_1.tipo.NULL };
     }
+    drawAST() {
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoPrincipal = `nodoRelacional${id.toString()}`;
+        let ramaRelacional = `${nodoPrincipal}[label="Relacional"];\n`;
+        const codigoRama = this.izquierdo.drawAST();
+        ramaRelacional += codigoRama.rama;
+        ramaRelacional += `${nodoPrincipal} -> ${codigoRama.nodo};\n`;
+        const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+        const nodoRama = `nodoRelacionalLOL${id2.toString()}`;
+        let nodoVar = `${nodoRama}[label="${TipoRelacional_1.tipoRelacional[this.operador]}"];\n`;
+        ramaRelacional += nodoVar;
+        ramaRelacional += `${nodoPrincipal} -> ${nodoRama};\n`;
+        const codigoRama2 = this.derecho.drawAST();
+        ramaRelacional += codigoRama2.rama;
+        ramaRelacional += `${nodoPrincipal} -> ${codigoRama2.nodo};\n`;
+        return { rama: ramaRelacional, nodo: nodoPrincipal };
+    }
 }
 exports.Relacional = Relacional;

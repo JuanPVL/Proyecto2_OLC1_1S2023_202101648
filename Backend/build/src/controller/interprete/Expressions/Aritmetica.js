@@ -79,6 +79,7 @@ class Aritmetica extends Expression_1.Expression {
                     if (operador1.type == Return_1.tipo.CHAR) {
                         operador1.value = operador1.value.charCodeAt(0);
                     }
+                    return { value: operador1.value - operador2.value, type: Return_1.tipo.DOUBLE };
             }
         }
         else if (this.operador == TipoAritmetica_1.tipoAritmetica.MULTIPLICACION) {
@@ -149,6 +150,35 @@ class Aritmetica extends Expression_1.Expression {
             }
         }
         return { value: null, type: Return_1.tipo.NULL };
+    }
+    drawAST() {
+        const id = Math.floor(Math.random() * (999 - 0) + 0);
+        const nombreNodo = `nodoAritmetica${id.toString()}`;
+        let ramaA = `${nombreNodo}[label="Aritmetica"];\n`;
+        if (this.operador == TipoAritmetica_1.tipoAritmetica.MENOSUNARIO) {
+            const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+            const codigoRama = `nodoAritmeticaLix${id2.toString()}`;
+            let nodoMU = `${codigoRama}[label="Menos Unario"];\n`;
+            ramaA += nodoMU;
+            ramaA += `${nombreNodo} -> ${codigoRama};\n`;
+            const codigoRamas = this.izquierdo.drawAST();
+            ramaA += codigoRamas.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas.nodo};\n`;
+        }
+        else {
+            const codigoRamas = this.izquierdo.drawAST();
+            ramaA += codigoRamas.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas.nodo};\n`;
+            const id2 = Math.floor(Math.random() * (999 - 0) + 0);
+            const codigoRama = `nodoAritmeticaLop${id2.toString()}`;
+            let nodoOperador = `${codigoRama}[label="${TipoAritmetica_1.tipoAritmetica[this.operador]}"];\n`;
+            ramaA += nodoOperador;
+            ramaA += `${nombreNodo} -> ${codigoRama};\n`;
+            const codigoRamas2 = this.derecho.drawAST();
+            ramaA += codigoRamas2.rama;
+            ramaA += `${nombreNodo} -> ${codigoRamas2.nodo};\n`;
+        }
+        return { rama: ramaA, nodo: nombreNodo };
     }
 }
 exports.Aritmetica = Aritmetica;
